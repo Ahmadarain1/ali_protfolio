@@ -23,7 +23,9 @@
     "@types/react": "19.2.14",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
+    "png-to-ico": "^3.0.1",
     "postcss": "^8.5",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.0",
     "typescript": "6.0.2"
   }
