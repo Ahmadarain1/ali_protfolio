@@ -82,10 +82,6 @@ const Gallery = () => {
     fileInputRef.current?.click()
   }
 
-  const removeItem = (id) => {
-    setGalleryItems(galleryItems.filter(item => item.id !== id))
-  }
-
   return (
     <section
       id="gallery"
@@ -162,14 +158,6 @@ const Gallery = () => {
                   <p className="text-sm text-gray-200 mb-4">
                     {item.type === 'gif' ? 'Animated GIF' : 'Character Design'}
                   </p>
-                  <motion.button
-                    onClick={() => removeItem(item.id)}
-                    className="text-sm text-red-400 hover:text-red-300 transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Remove
-                  </motion.button>
                 </motion.div>
               </motion.div>
             ))}
