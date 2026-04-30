@@ -1,19 +1,16 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
 const Gallery = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
-  const [galleryItems, setGalleryItems] = useState([
+  const [galleryItems] = useState([
     { id: 1, src: '/gallery/banana.png', title: 'Banana Character', type: 'png' },
     { id: 2, src: '/gallery/excited.gif', title: 'Excited Musician', type: 'gif' },
   ])
-  const [isUploading, setIsUploading] = useState(false)
-  const fileInputRef = useRef(null)
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -41,45 +38,6 @@ const Gallery = () => {
       scale: 1,
       transition: { duration: 0.5, ease: 'easeOut' },
     },
-  }
-
-  const handleUpload = async (e) => {
-    const files = e.target.files
-    if (!files) return
-
-    setIsUploading(true)
-    
-    for (let file of files) {
-      if (!file.type.startsWith('image/')) {
-        alert('Please upload image files only')
-        continue
-      }
-
-      try {
-        const reader = new FileReader()
-        reader.onload = (event) => {
-          const newItem = {
-            id: Date.now(),
-            src: event.target.result,
-            title: file.name.split('.')[0],
-            type: file.type.includes('gif') ? 'gif' : 'image',
-          }
-          setGalleryItems([...galleryItems, newItem])
-        }
-        reader.readAsDataURL(file)
-      } catch (error) {
-        console.error('Error uploading file:', error)
-      }
-    }
-
-    setIsUploading(false)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
-  }
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click()
   }
 
   return (
@@ -163,36 +121,6 @@ const Gallery = () => {
             ))}
           </motion.div>
 
-          {/* Upload Section */}
-          <motion.div variants={itemVariants} className="flex justify-center">
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleUpload}
-              className="hidden"
-              disabled={isUploading}
-            />
-            <motion.button
-              onClick={triggerFileInput}
-              disabled={isUploading}
-              className="px-10 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl font-bold text-lg shadow-lg hover:shadow-2xl transition-all disabled:opacity-50 uppercase tracking-wider flex items-center gap-3"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="text-2xl">+</span>
-              {isUploading ? 'Uploading...' : 'Add New Animation'}
-            </motion.button>
-          </motion.div>
-
-          {/* Info Text */}
-          <motion.p
-            variants={itemVariants}
-            className="text-center text-muted-foreground mt-8 text-sm"
-          >
-            Click the button above to upload your own animated GIFs or character designs. Supported formats: PNG, GIF, JPG, WEBP
-          </motion.p>
         </motion.div>
       </div>
     </section>
